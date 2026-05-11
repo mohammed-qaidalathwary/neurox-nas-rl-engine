@@ -1,4 +1,4 @@
-from config import Config
+ from config import Config
 
 def main():
 
@@ -7,4 +7,4 @@ def main():
     print("Device:", Config.device)
 
 if __name__ == "__main__":
-    main()
+    main() 
