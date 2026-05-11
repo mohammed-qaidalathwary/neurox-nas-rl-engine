@@ -15,4 +15,4 @@ def main():
     print("Test batches:", len(testloader))
 
 if __name__ == "__main__":
-    main() 
+    main()
