@@ -1,18 +1,41 @@
- %%writefile train.py
-from config import Config
-from training.cifar10_loader import get_cifar10_loaders
+ %%writefile cifar10_loader.py
+import torch
+import torchvision
+import torchvision.transforms as transforms
 
-def main():
+def get_cifar10_loaders(batch_size=128):
 
-    print("NeuroX initialized")
-    print("Dataset:", Config.dataset)
-    print("Device:", Config.device)
+    transform = transforms.Compose([
+        transforms.ToTensor(),
+        transforms.Normalize((0.5,), (0.5,))
+    ])
 
-    trainloader, testloader = get_cifar10_loaders(Config.batch_size)
+    trainset = torchvision.datasets.CIFAR10(
+        root='./data',
+        train=True,
+        download=True,
+        transform=transform
+    )
 
-    print("Data loaders ready")
-    print("Train batches:", len(trainloader))
-    print("Test batches:", len(testloader))
+    trainloader = torch.utils.data.DataLoader(
+        trainset,
+        batch_size=batch_size,
+        shuffle=True,
+        num_workers=2
+    )
 
-if __name__ == "__main__":
-    main()
+    testset = torchvision.datasets.CIFAR10(
+        root='./data',
+        train=False,
+        download=True,
+        transform=transform
+    )
+
+    testloader = torch.utils.data.DataLoader(
+        testset,
+        batch_size=batch_size,
+        shuffle=False,
+        num_workers=2
+    )
+
+    return trainloader, testloader
